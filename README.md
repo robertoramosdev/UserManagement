@@ -84,10 +84,14 @@ The role is stored on the user document (e.g. `role: "user" | "admin"`) and enfo
 ### Users
 | Method | Endpoint            | Description                    | Access      |
 |--------|---------------------|--------------------------------|-------------|
-| GET    | `/api/users`        | List all users                 | Admin       |
+| GET    | `/api/users`        | List users (paginated + search)| Admin       |
 | GET    | `/api/users/:id`    | Get a single user              | Admin/Owner |
 | PUT    | `/api/users/:id`    | Update a user                  | Admin/Owner |
 | DELETE | `/api/users/:id`    | Delete a user                  | Admin       |
+
+`GET /api/users` accepts `?page=`, `?limit=` (max 100), and `?search=` (matches
+name or email, case-insensitive) query params, and returns
+`{ users, total, page, pages }`.
 
 ## Getting Started
 
@@ -175,6 +179,11 @@ The app will be available at `http://localhost:5173` (frontend) and the API at `
 - Never commit `.env` files — they are listed in `.gitignore`.
 - JWTs are signed with a strong secret and have an expiry.
 - All admin-only routes are guarded by role-checking middleware on the server (never rely on the client alone).
+- **Security headers** are set on every response via [helmet](https://helmetjs.github.io/).
+- **Rate limiting** protects the credential endpoints (`/auth/signup`, `/auth/login`, `/auth/admin/login`): 10 attempts per IP per 15 minutes, returning `429` when exceeded. Tune in `server/src/middleware/rateLimiter.js`.
+- **Server-side input validation** ([express-validator](https://express-validator.github.io/)) enforces email format, password length, and required fields, and normalizes emails to lowercase. Rules live in `server/src/validators/`.
+- Request bodies are capped at `10kb`.
+- Admins cannot delete or demote their own account (prevents self-lockout).
 
 ## License
 
