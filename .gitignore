@@ -15,6 +15,9 @@ build/
 *.log
 npm-debug.log*
 
+# Temporary test scratch
+server/smoke.mjs
+
 # Editor / OS
 .vscode/
 .idea/

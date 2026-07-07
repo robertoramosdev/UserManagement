@@ -35,13 +35,22 @@ export const AuthProvider = ({ children }) => {
     return handleAuth(res.data);
   };
 
+  // Update the current user's own profile and sync it into context
+  const updateProfile = async (payload) => {
+    const res = await api.put(`/users/${user.id}`, payload);
+    setUser(res.data.user);
+    return res.data.user;
+  };
+
   const logout = () => {
     localStorage.removeItem("token");
     setUser(null);
   };
 
   return (
-    <AuthContext.Provider value={{ user, loading, authenticate, logout }}>
+    <AuthContext.Provider
+      value={{ user, loading, authenticate, updateProfile, logout }}
+    >
       {children}
     </AuthContext.Provider>
   );

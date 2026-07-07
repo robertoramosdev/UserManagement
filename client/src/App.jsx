@@ -4,7 +4,6 @@ import ProtectedRoute from "./components/ProtectedRoute.jsx";
 import Login from "./pages/Login.jsx";
 import Signup from "./pages/Signup.jsx";
 import AdminLogin from "./pages/AdminLogin.jsx";
-import AdminSignup from "./pages/AdminSignup.jsx";
 import Dashboard from "./pages/Dashboard.jsx";
 import AdminDashboard from "./pages/AdminDashboard.jsx";
 import { useAuth } from "./context/AuthContext.jsx";
@@ -29,7 +28,6 @@ const App = () => {
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/admin/login" element={<AdminLogin />} />
-        <Route path="/admin/signup" element={<AdminSignup />} />
 
         {/* Protected routes */}
         <Route

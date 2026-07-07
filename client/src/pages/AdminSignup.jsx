@@ -1,32 +1,7 @@
-import { Link, useNavigate } from "react-router-dom";
-import AuthForm from "../components/AuthForm.jsx";
-import { useAuth } from "../context/AuthContext.jsx";
-
-const AdminSignup = () => {
-  const { authenticate } = useAuth();
-  const navigate = useNavigate();
-
-  const handleSubmit = async (payload) => {
-    await authenticate("/auth/admin/signup", payload);
-    navigate("/admin");
-  };
-
-  return (
-    <AuthForm
-      title="Admin sign up"
-      subtitle="Create an administrator account."
-      mode="signup"
-      onSubmit={handleSubmit}
-      footer={
-        <p>
-          Already an admin?{" "}
-          <Link to="/admin/login" className="font-medium text-slate-800 underline">
-            Log in
-          </Link>
-        </p>
-      }
-    />
-  );
-};
-
-export default AdminSignup;
+// Deprecated: public admin signup was removed.
+// Admins are now created either by the seed script (`npm run seed:admin`)
+// or by an existing admin from the Admin dashboard.
+// This file is intentionally left as a no-op and is not routed anywhere.
+export default function AdminSignup() {
+  return null;
+}

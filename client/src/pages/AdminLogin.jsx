@@ -18,19 +18,11 @@ const AdminLogin = () => {
       mode="login"
       onSubmit={handleSubmit}
       footer={
-        <>
-          <p>
-            Need an admin account?{" "}
-            <Link to="/admin/signup" className="font-medium text-slate-800 underline">
-              Sign up
-            </Link>
-          </p>
-          <p className="mt-2">
-            <Link to="/login" className="text-slate-500 underline">
-              User login
-            </Link>
-          </p>
-        </>
+        <p>
+          <Link to="/login" className="text-slate-500 underline">
+            User login
+          </Link>
+        </p>
       }
     />
   );

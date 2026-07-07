@@ -6,7 +6,7 @@ import {
   loginAdmin,
   getMe,
 } from "../controllers/authController.js";
-import { protect } from "../middleware/auth.js";
+import { protect, authorize } from "../middleware/auth.js";
 
 const router = express.Router();
 
@@ -15,7 +15,9 @@ router.post("/signup", signupUser);
 router.post("/login", loginUser);
 
 // Admin user
-router.post("/admin/signup", signupAdmin);
+// Creating an admin requires an existing admin (seed the first one via
+// `npm run seed:admin`). Admin login stays public.
+router.post("/admin/signup", protect, authorize("admin"), signupAdmin);
 router.post("/admin/login", loginAdmin);
 
 // Current user
