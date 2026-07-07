@@ -18,6 +18,9 @@ npm-debug.log*
 # Temporary test scratch
 server/smoke.mjs
 
+# Local dev MongoDB (data + launcher are machine-specific)
+server/.local-mongo-data/
+
 # Editor / OS
 .vscode/
 .idea/
