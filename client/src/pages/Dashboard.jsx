@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useAuth } from "../context/AuthContext.jsx";
+import { useToast } from "../context/ToastContext.jsx";
 
 // Normal user dashboard / profile
 const Dashboard = () => {
@@ -51,13 +52,12 @@ const Dashboard = () => {
 
 // Edit form for the user's own name / email / password
 const ProfileForm = ({ user, updateProfile, onDone }) => {
+  const toast = useToast();
   const [form, setForm] = useState({
     name: user.name,
     email: user.email,
     password: "",
   });
-  const [error, setError] = useState("");
-  const [success, setSuccess] = useState("");
   const [saving, setSaving] = useState(false);
 
   const handleChange = (e) =>
@@ -65,18 +65,16 @@ const ProfileForm = ({ user, updateProfile, onDone }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError("");
-    setSuccess("");
     setSaving(true);
     try {
       // Only send fields that have a value; skip an empty password
       const payload = { name: form.name, email: form.email };
       if (form.password) payload.password = form.password;
       await updateProfile(payload);
-      setSuccess("Profile updated");
+      toast.success("Profile updated");
       setForm((f) => ({ ...f, password: "" }));
     } catch (err) {
-      setError(err?.response?.data?.message || "Failed to update profile");
+      toast.error(err?.response?.data?.message || "Failed to update profile");
     } finally {
       setSaving(false);
     }
@@ -88,17 +86,6 @@ const ProfileForm = ({ user, updateProfile, onDone }) => {
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
       <h2 className="text-sm font-semibold text-slate-800">Edit profile</h2>
-
-      {error && (
-        <div className="rounded-md bg-red-50 px-3 py-2 text-sm text-red-700">
-          {error}
-        </div>
-      )}
-      {success && (
-        <div className="rounded-md bg-green-50 px-3 py-2 text-sm text-green-700">
-          {success}
-        </div>
-      )}
 
       <div>
         <label className="block text-sm font-medium text-slate-700">Name</label>
