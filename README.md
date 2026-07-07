@@ -73,9 +73,13 @@ The role is stored on the user document (e.g. `role: "user" | "admin"`) and enfo
 |--------|---------------------------|-----------------------------------|--------|
 | POST   | `/api/auth/signup`        | Register a normal user            | Public |
 | POST   | `/api/auth/login`         | Log in a normal user              | Public |
-| POST   | `/api/auth/admin/signup`  | Register an admin user            | Public |
+| POST   | `/api/auth/admin/signup`  | Create an admin user              | Admin  |
 | POST   | `/api/auth/admin/login`   | Log in an admin user              | Public |
 | GET    | `/api/auth/me`            | Get the current logged-in user    | Auth   |
+
+> **Admin accounts are not publicly self-registerable.** Create the first
+> admin with the seed script (below); after that, an existing admin can create
+> more admins from the Admin dashboard.
 
 ### Users
 | Method | Endpoint            | Description                    | Access      |
@@ -89,7 +93,17 @@ The role is stored on the user document (e.g. `role: "user" | "admin"`) and enfo
 
 ### Prerequisites
 - Node.js (v18 or later)
-- MongoDB (local instance or MongoDB Atlas)
+- MongoDB — either a local install, MongoDB Atlas, or Docker (see below)
+
+### Database in one command (Docker)
+
+If you have Docker, you don't need to install MongoDB. From the project root:
+```bash
+docker compose up -d
+```
+This starts MongoDB on `localhost:27017` with a persistent volume, matching the
+default `MONGO_URI` in `server/.env.example`. Stop it with `docker compose down`
+(add `-v` to also wipe the stored data).
 
 ### 1. Clone the repository
 ```bash
@@ -109,6 +123,12 @@ PORT=5000
 MONGO_URI=mongodb://localhost:27017/user_management
 JWT_SECRET=your_jwt_secret_here
 JWT_EXPIRES_IN=7d
+```
+
+Seed the first admin account (set `SEED_ADMIN_EMAIL` / `SEED_ADMIN_PASSWORD` in
+`server/.env` first):
+```bash
+npm run seed:admin
 ```
 
 Start the backend:
